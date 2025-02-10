@@ -5,11 +5,11 @@ import os
 os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
 
 # Load the Whisper model with float32 to avoid the float16 warning
-model = WhisperModel("base", compute_type="float32")
+model = WhisperModel("tiny", compute_type="int8", device="cpu")
 
 def transcribe_audio(file_path):
     try:
-        segments, _ = model.transcribe(file_path, beam_size=5, language="en")
+        segments, _ = model.transcribe(file_path, beam_size=2, language="en")
         transcription = " ".join(segment.text for segment in segments)
         print(f'{{"transcription": "{transcription.strip()}"}}\n', flush=True)
     except Exception as e:
